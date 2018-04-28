@@ -58,7 +58,7 @@ while True:
 							except KeyError:
 								pass
 						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd)):
-							blacklistcmds = ['видео','vox','доки','гиф']
+							blacklistcmds = ['видео','музыка','vox','доки','гиф']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
 								answtext.remove(answtext[0])
