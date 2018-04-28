@@ -10,6 +10,8 @@ if answ[1] == 'скажи':
 		open('tmp/audio.mp3','wb').write(audio)
 		ret = requests.get('https://api.vk.com/method/docs.getMessagesUploadServer?type=audio_message&peer_id='+str(toho)+'&access_token={access_token}&v=5.68'.format(access_token=token)).json()
 		#print(ret)
+		if not os.path.exists('tmp'):
+					os.mkdir('tmp')
 		with open('tmp/audio.mp3', 'rb') as f:
 			ret = requests.post(ret['response']['upload_url'], files={'file': f}).text
 		ret = json.loads(ret)

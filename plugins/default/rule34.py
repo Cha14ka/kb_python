@@ -23,6 +23,8 @@ if answ[1] == '34':
 				#print(parse)
 				pic = requests.get(parse).content
 				#print(len(pic))
+				if not os.path.exists('tmp'):
+					os.mkdir('tmp')
 				open('tmp/rule34.jpg','wb').write(pic)
 				############################################
 				ret = requests.get('https://api.vk.com/method/photos.getMessagesUploadServer?access_token={access_token}&v=5.68'.format(access_token=token)).json()

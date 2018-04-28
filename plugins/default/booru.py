@@ -11,6 +11,8 @@ if answ[1] == 'бура':
 			parse = parse.posts.post[randnum]['file_url']
 			parse = parse.replace('//','http://')
 			pic = requests.get(parse).content
+			if not os.path.exists('tmp'):
+					os.mkdir('tmp')
 			open('tmp/booru.jpg','wb').write(pic)
 			############################################
 			ret = requests.get('https://api.vk.com/method/photos.getMessagesUploadServer?access_token={access_token}&v=5.68'.format(access_token=token)).json()
