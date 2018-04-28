@@ -63,7 +63,10 @@ while True:
 								thr.start()
 							except KeyError:
 								pass
-							if userid in json.loads(open('system/vip','r').read()):
+							viplist = json.loads(open('system/vip','r').read())
+							#print(userid,viplist)
+							#print(viplist[0])
+							if str(userid) in viplist:
 								try:
 									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',))
 									thr1.start()
