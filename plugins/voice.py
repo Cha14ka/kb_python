@@ -3,6 +3,7 @@ if answ[1] == 'скажи':
 	if (answ_text == ''):
 		apisay('А текст мб стоит вписать?)',toho,torep)
 	else:
+		answ_text = answ_text.replace('<br>','')
 		key = 'c8694d7c-afff-48c1-9701-b10def466526'
 		audio = requests.get('https://tts.voicetech.yandex.net/generate?&format=mp3&quality=hi&emotion=evil&key='+key+'&text='+str(urllib.parse.quote_plus(answ_text))).content
 		#print(audio)
