@@ -19,10 +19,11 @@ def apisay(text,toho,torep):
 print('Инициализация лонгполла завершена')
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']
-def evalcmds():
+def evalcmds(directory):
+	dir = os.listdir(directory)
+	#print(dir)
 	for plugnum in range(len(dir)):
-		execdata = open('plugins/'+str(dir[plugnum]),'r').read()
-		exec(execdata)
+		exec(open(directory+'/'+str(dir[plugnum]),'r').read())
 while True:
 	try:
 		response = requests.get('https://{server}?act=a_check&key={key}&ts={ts}&wait=20&mode=2&version=2'.format(server=data['server'], key=data['key'], ts=data['ts'])).json() 
@@ -37,12 +38,18 @@ while True:
 				if result[0] == 4:
 					open('system/msgs','a+').write(str(result)+'\n')
 					result[5] = result[5].lower()
+					#print(result[5])
 					answ = result[5].split(' ')
 					kb_cmd = json.loads(open('system/cmds','r').read())
+					#print(kb_cmd['default'])
 					if len(answ) > 1:
-						if ((answ[0] in kb_name) and (answ[1] in kb_cmd)):
+						if ((answ[0] in kb_name) and (answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"])):
 							toho = result[3]
 							torep = result[1]
+							if (toho < 2000000000):
+								userid = toho
+							else:
+								userid = result[6]['from']
 							print('[Упоминание кб в '+str(toho)+']')
 							answ_text = result[5].split(' ')
 							if len(answ_text) >2:
@@ -51,14 +58,22 @@ while True:
 							else:
 								answ_text = ''
 							answ_text = ' '.join(answ_text)
-							dir = os.listdir("plugins")
 							try:
-								thr = threading.Thread(target=evalcmds)
+								thr = threading.Thread(target=evalcmds,args=('plugins/default',))
 								thr.start()
 							except KeyError:
 								pass
-						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd)):
-							blacklistcmds = ['видео','музыка','vox','доки','гиф']
+							if userid in json.loads(open('system/vip','r').read()):
+								try:
+									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',))
+									thr1.start()
+								except KeyError:
+									pass
+							else:
+								if answ[1] in kb_cmd['vip']:
+									apisay('И куда это мы лезем?)',toho,torep)
+						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"])):
+							blacklistcmds = ['видео','музыка','vox','гиф']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
 								answtext.remove(answtext[0])
