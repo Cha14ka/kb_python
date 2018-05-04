@@ -20,7 +20,7 @@ def apisay(text,toho,torep):
 print('Инициализация лонгполла завершена')
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']
-def evalcmds(directory):
+def evalcmds(directory,toho,torep):
 	dir = os.listdir(directory)
 	#print(dir)
 	for plugnum in range(len(dir)):
@@ -60,7 +60,7 @@ while True:
 								answ_text = ''
 							answ_text = ' '.join(answ_text)
 							try:
-								thr = threading.Thread(target=evalcmds,args=('plugins/default',))
+								thr = threading.Thread(target=evalcmds,args=('plugins/default',toho,torep))
 								thr.start()
 							except KeyError:
 								pass
@@ -69,7 +69,7 @@ while True:
 							#print(viplist[0])
 							if str(userid) in viplist:
 								try:
-									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',))
+									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',toho,torep))
 									thr1.start()
 								except KeyError:
 									pass
