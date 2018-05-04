@@ -9,7 +9,7 @@ if answ[1]=='vox':
 			voxlist.append(vox_str[i])
 		else:
 			tmpvox = list(vox_str[i])
-			for k in range(len(list(tmpvox))):
+			for k in range(len(tmpvox)):
 				if tmpvox[k]+'.wav' in listdir:
 					voxlist.append(tmpvox[k])
 	voxcmd = ''

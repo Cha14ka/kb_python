@@ -11,6 +11,7 @@ import datetime
 import untangle
 import urllib.parse
 token = open('system/token','r').read()
+token = token.split('\n')[0]
 kb_name = ['kb','кб','кл','кч']
 def apisay(text,toho,torep):
 	param = (('v', '5.68'), ('peer_id', toho),('access_token',token),('message',text),('forward_messages',torep))
