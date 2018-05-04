@@ -18,6 +18,7 @@ def apisay(text,toho,torep):
 	result = requests.post('https://api.vk.com/method/messages.send', data=param)
 	return result.text
 print('Инициализация лонгполла завершена')
+open('system/msgs','w').write('')
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']
 def evalcmds(directory,toho,torep):
