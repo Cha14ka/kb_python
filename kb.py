@@ -44,7 +44,7 @@ while True:
 					kb_cmd = json.loads(open('system/cmds','r').read())
 					#print(kb_cmd['default'])
 					if len(answ) > 1:
-						if ((answ[0] in kb_name) and (answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"])):
+						if ((answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]))):
 							toho = result[3]
 							torep = result[1]
 							if (toho < 2000000000):
