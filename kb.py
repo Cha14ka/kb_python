@@ -44,7 +44,7 @@ while True:
 					kb_cmd = json.loads(open('system/cmds','r').read())
 					#print(kb_cmd['default'])
 					if len(answ) > 1:
-						if ((answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]))):
+						if ((answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]) or (answ[1] in kb_cmd["admin"]))):
 							toho = result[3]
 							torep = result[1]
 							if (toho < 2000000000):
@@ -65,8 +65,7 @@ while True:
 							except KeyError:
 								pass
 							viplist = json.loads(open('system/vip','r').read())
-							#print(userid,viplist)
-							#print(viplist[0])
+							adminlist = json.loads(open('system/admin','r').read())
 							if str(userid) in viplist:
 								try:
 									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',toho,torep))
@@ -75,8 +74,17 @@ while True:
 									pass
 							else:
 								if answ[1] in kb_cmd['vip']:
-									apisay('И куда это мы лезем?)',toho,torep)
-						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"])):
+									apisay('Тебя нет в вайтлисте чтоб юзать эту команду, пуся',toho,torep)
+							if str(userid) in adminlist:
+								try:
+									thr1 = threading.Thread(target=evalcmds,args=('plugins/admin',toho,torep))
+									thr1.start()
+								except KeyError:
+									pass
+							else:
+								if answ[1] in kb_cmd['admin']:
+									apisay('До админки тебе ещё далеко',toho,torep)
+						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"]) and (answ[1] not in kb_cmd["admin"])):
 							blacklistcmds = ['видео','музыка','vox','гиф']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
@@ -87,4 +95,5 @@ while True:
 								apisay(ret['text'],result[3],result[1])
 	except Exception as error:
 		print(error)
+		apisay(error,adminlist[0],'')
 	data['ts'] = response['ts'] 
