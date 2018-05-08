@@ -14,6 +14,6 @@ if answ[1] == 'delvip':
 	try:
 		vips.remove(str(ret))
 		open('system/vip','w').write(json.dumps(vips))
-		apisay('Забрала випку ук id'+str(ret),toho,torep)
+		apisay('Забрала випку у id'+str(ret),toho,torep)
 	except ValueError:
 		apisay('Такого юзера нет в списке',toho,torep)

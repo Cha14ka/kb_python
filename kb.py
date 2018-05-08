@@ -17,7 +17,9 @@ def apisay(text,toho,torep):
 	param = (('v', '5.68'), ('peer_id', toho),('access_token',token),('message',text),('forward_messages',torep))
 	result = requests.post('https://api.vk.com/method/messages.send', data=param)
 	return result.text
-print('Инициализация лонгполла завершена')
+def exitgame():
+	print(str(userid)+' покинул игру '+game_module['active_users'][str(userid)])
+	del game_module['active_users'][str(userid)]
 open('system/msgs','w').write('')
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']
@@ -26,6 +28,9 @@ def evalcmds(directory,toho,torep):
 	#print(dir)
 	for plugnum in range(len(dir)):
 		exec(open(directory+'/'+str(dir[plugnum]),'r').read())
+game_module = open('system/game_module','r').read()
+game_module = json.loads(game_module)
+print('Инициализация бота завершена')
 while True:
 	try:
 		response = requests.get('https://{server}?act=a_check&key={key}&ts={ts}&wait=20&mode=2&version=2'.format(server=data['server'], key=data['key'], ts=data['ts'])).json() 
@@ -38,20 +43,32 @@ while True:
 		if updates: 
 			for result in updates: 
 				if result[0] == 4:
+					if (result[3] < 2000000000):
+						userid = result[3]
+					else:
+						userid = result[6]['from']
+					toho = result[3]
+					torep = result[1]
+					###game
+					if (result[3] > 2000000000):
+						if str(userid) in game_module['active_users']:
+							answ_text = result[5].lower()
+							print(str(userid)+' в игре '+game_module['active_users'][str(userid)])
+							#print(game_module['games_info'][game_module['active_users'][userid]])
+							def evalgames(answ_text,toho,torep):
+								#print(game_module['games_info'][game_module['active_users'][userid]])
+								#print(answ_text,toho,torep)
+								exec(open(game_module['games_info'][game_module['active_users'][userid]],'r').read())
+							thr = threading.Thread(target=evalgames,args=(answ_text,toho,torep))
+							thr.start()
+					###game
 					open('system/msgs','a+').write(str(result)+'\n')
 					result[5] = result[5].lower()
-					#print(result[5])
 					answ = result[5].split(' ')
 					kb_cmd = json.loads(open('system/cmds','r').read())
 					#print(kb_cmd['default'])
 					if len(answ) > 1:
-						if ((answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]) or (answ[1] in kb_cmd["admin"]))):
-							toho = result[3]
-							torep = result[1]
-							if (toho < 2000000000):
-								userid = toho
-							else:
-								userid = result[6]['from']
+						if (str(userid) not in game_module['active_users'] and (answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]) or (answ[1] in kb_cmd["admin"]))):
 							print('[Упоминание кб в '+str(toho)+']')
 							answ_text = result[5].split(' ')
 							if len(answ_text) >2:
@@ -86,7 +103,7 @@ while True:
 								if answ[1] in kb_cmd['admin']:
 									apisay('До админки тебе ещё далеко',toho,torep)
 						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"]) and (answ[1] not in kb_cmd["admin"])):
-							blacklistcmds = ['видео','музыка','vox','гиф']
+							blacklistcmds = ['гиф']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
 								answtext.remove(answtext[0])
@@ -95,6 +112,7 @@ while True:
 								ret = requests.post('https://isinkin-bot-api.herokuapp.com/1/talk',data=param).json()
 								apisay(ret['text'],result[3],result[1])
 	except Exception as error:
+		adminlist = json.loads(open('system/admin','r').read())
 		print(error)
 		apisay(error,adminlist[0],'')
 	data['ts'] = response['ts'] 
