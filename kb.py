@@ -103,7 +103,7 @@ while True:
 								if answ[1] in kb_cmd['admin']:
 									apisay('До админки тебе ещё далеко',toho,torep)
 						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"]) and (answ[1] not in kb_cmd["admin"]) and (str(userid) not in game_module['active_users'])):
-							blacklistcmds = ['гиф']
+							blacklistcmds = ['гиф','преакт','цитата','гцитата']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
 								answtext.remove(answtext[0])
