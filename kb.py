@@ -23,7 +23,7 @@ def exitgame():
 open('system/msgs','w').write('')
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']
-def evalcmds(directory,toho,torep):
+def evalcmds(directory,toho,torep,answ_text):
 	dir = os.listdir(directory)
 	#print(dir)
 	for plugnum in range(len(dir)):
@@ -78,7 +78,7 @@ while True:
 								answ_text = ''
 							answ_text = ' '.join(answ_text)
 							try:
-								thr = threading.Thread(target=evalcmds,args=('plugins/default',toho,torep))
+								thr = threading.Thread(target=evalcmds,args=('plugins/default',toho,torep,answ_text))
 								thr.start()
 							except KeyError:
 								pass
@@ -86,7 +86,7 @@ while True:
 							adminlist = json.loads(open('system/admin','r').read())
 							if str(userid) in viplist:
 								try:
-									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',toho,torep))
+									thr1 = threading.Thread(target=evalcmds,args=('plugins/vip',toho,torep,answ_text))
 									thr1.start()
 								except KeyError:
 									pass
@@ -95,7 +95,7 @@ while True:
 									apisay('Тебя нет в вайтлисте чтоб юзать эту команду, пуся',toho,torep)
 							if str(userid) in adminlist:
 								try:
-									thr1 = threading.Thread(target=evalcmds,args=('plugins/admin',toho,torep))
+									thr1 = threading.Thread(target=evalcmds,args=('plugins/admin',toho,torep,answ_text))
 									thr1.start()
 								except KeyError:
 									pass
