@@ -60,6 +60,7 @@ while True:
 						userid = result[6]['from']
 					toho = result[3]
 					torep = result[1]
+					blacklist = json.loads(open('system/blacklist','r').read())
 					###game
 					if (result[3] > 2000000000):
 						if str(userid) in game_module['active_users']:
@@ -81,7 +82,7 @@ while True:
 					if len(answ) > 1:
 						answ[0] = answ[0].lower()
 						answ[1] = answ[1].lower()
-						if (str(userid) not in game_module['active_users'] and (answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]) or (answ[1] in kb_cmd["admin"]))):
+						if (str(userid) not in game_module['active_users'] and (str(userid) not in blacklist) and (answ[0] in kb_name) and ((answ[1] in kb_cmd["default"]) or (answ[1] in kb_cmd["vip"]) or (answ[1] in kb_cmd["admin"]))):
 							print('[Упоминание кб в '+str(toho)+']')
 							answ_text = result[5].split(' ')
 							if len(answ_text) >2:
@@ -115,7 +116,7 @@ while True:
 							else:
 								if answ[1] in kb_cmd['admin']:
 									apisay('До админки тебе ещё далеко',toho,torep)
-						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (answ[1] not in kb_cmd["vip"]) and (answ[1] not in kb_cmd["admin"]) and (str(userid) not in game_module['active_users'])):
+						if ((answ[0] in kb_name) and (answ[1] not in kb_cmd["default"]) and (str(userid) not in blacklist) and (answ[1] not in kb_cmd["vip"]) and (answ[1] not in kb_cmd["admin"]) and (str(userid) not in game_module['active_users'])):
 							blacklistcmds = ['гиф','преакт','цитата','гцитата']
 							if answ[1] not in blacklistcmds:
 								answtext = result[5].split(' ')
