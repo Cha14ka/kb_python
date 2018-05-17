@@ -11,6 +11,7 @@ import datetime
 import untangle
 import urllib.parse
 import time
+import html
 from datetime import timedelta
 token = open('system/token','r').read()
 token = token.split('\n')[0]
@@ -91,6 +92,7 @@ while True:
 							else:
 								answ_text = ''
 							answ_text = ' '.join(answ_text)
+							answ_text = html.unescape(answ_text)
 							try:
 								thr = threading.Thread(target=evalcmds,args=('plugins/default',toho,torep,answ))
 								thr.start()
