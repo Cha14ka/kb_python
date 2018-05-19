@@ -130,5 +130,5 @@ while True:
 	except Exception as error:
 		adminlist = json.loads(open('system/admin','r').read())
 		print(error)
-		apisay(error,adminlist[0],'')
+		#apisay(error,adminlist[0],'')
 	data['ts'] = response['ts'] 

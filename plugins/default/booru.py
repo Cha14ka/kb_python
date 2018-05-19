@@ -5,6 +5,7 @@ if answ[1] == 'бура':
 		r34text = answ_text
 	try:
 		try:
+			r34text = r34text.replace(' ','+')
 			parse = untangle.parse('http://safebooru.org/index.php?page=dapi&s=post&q=index&limit=100&tags='+str(r34text))
 			randnum = random.randint(0,len(parse.posts.post))
 			mess = 'Бурятские артики по запросу<br>('+str(randnum)+'/'+str(len(parse.posts.post))+')<br>----------<br>Остальные теги: '+parse.posts.post[randnum]['tags']
