@@ -6,7 +6,7 @@ if answ[1] == '34':
 	try:
 		try:	
 			r34text = r34text.replace(' ','+')
-			blacklist = '-fur+-darling_in_the_franxx+-furry+-dragon+-guro+-animal_penis+-animal+-wolf+-fox+-webm+-my_little_pony+-monster*+-3d+-animal*+-ant+-insects+-mammal+-horse+-blotch+-deer+-real*+-shit+-everlasting_summer+-copro*+-wtf+'
+			blacklist = '-fur+-scat*-darling_in_the_franxx+-furry+-dragon+-guro+-animal_penis+-animal+-wolf+-fox+-webm+-my_little_pony+-monster*+-3d+-animal*+-ant+-insects+-mammal+-horse+-blotch+-deer+-real*+-shit+-everlasting_summer+-copro*+-wtf+'
 			parse = untangle.parse('http://0s.oj2wyzjtgqxhq6dy.cmle.ru/index.php?page=dapi&s=post&q=index&limit=100&tags='+blacklist+str(r34text))
 			randnum = random.randint(0,len(parse.posts.post))
 			#print(parse.posts.post[randnum])
