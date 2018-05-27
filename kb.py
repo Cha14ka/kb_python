@@ -41,14 +41,15 @@ while True:
 			continue
 		#Обработка сообщений
 		if updates: 
-			for result in updates: 
+			for result in updates:
 				if result[0] == 4:
+					toho = result[3]
+					torep = result[1]
+					exec(open('system/core.py','r').read())
 					if (result[3] < 2000000000):
 						userid = result[3]
 					else:
 						userid = result[6]['from']
-					toho = result[3]
-					torep = result[1]
 					blacklist = json.loads(open('system/users','r').read())['blacklist']
 					answ = result[5].split(' ')
 					###game
