@@ -25,6 +25,20 @@ def sendpic(pic,mess,toho,torep):
 	requests.get('https://api.vk.com/method/messages.send?attachment=photo'+str(ret['response'][0]['owner_id'])+'_'+str(ret['response'][0]['id'])+'&message='+mess+'&v=5.68&forward_messages='+str(torep)+'&peer_id='+str(toho)+'&access_token='+str(token))
 def evalcmds(filename,toho,torep,answ):
 	exec(open(filename,'r').read())
+#Заявки в друзья
+def friends():
+	try:
+		while True:
+			friendslist = requests.post('https://api.vk.com/method/friends.getRequests',data={"access_token":token,"need_viewed":"1","v":"5.68"}).text
+			friendslist = json.loads(friendslist)
+			#print(friendslist)
+			for frcount in range(len(friendslist['response']['items'])):
+				requests.post('https://api.vk.com/method/friends.add',data={"access_token":token,"v":"5.68","user_id":friendslist['response']['items'][frcount]})
+				print('Приняла заявку от id'+str(friendslist['response']['items'][frcount]))
+			time.sleep(30)
+	except Exception as error:
+		print(error)
+threading.Thread(target=friends).start()
 #Лонгполл
 data = requests.get('https://api.vk.com/method/messages.getLongPollServer?access_token='+str(token)+'&v=5.68&lp_version=2').text
 data = json.loads(data)['response']

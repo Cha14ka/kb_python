@@ -29,7 +29,8 @@
 		"реакт":"react.py",
 		"преакт":"preact.py",
 		"цитата":"quote.py",
-		"чат":"joingames.py"
+		"чат":"joingames.py",
+   "двач":"2ch.py"
 	},
 	"admin":{
 		"терм":"terminal.py",
